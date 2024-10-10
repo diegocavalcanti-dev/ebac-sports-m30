@@ -1,10 +1,15 @@
-import { useEffect, useState } from 'react'
+// src/App.tsx
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Header from './components/Header'
 import Produtos from './containers/Produtos'
-
 import { GlobalStyle } from './styles'
+import { addToCart } from './store/cartSlice'
+import { addToFavorites, removeFromFavorites } from './store/favoritesSlice'
+import { setProdutos } from './store/productsSlice'
+import { RootState } from './store'
 
-export type Produto = {
+export interface Produto {
   id: number
   nome: string
   preco: number
@@ -12,30 +17,29 @@ export type Produto = {
 }
 
 function App() {
-  const [produtos, setProdutos] = useState<Produto[]>([])
-  const [carrinho, setCarrinho] = useState<Produto[]>([])
-  const [favoritos, setFavoritos] = useState<Produto[]>([])
+  const dispatch = useDispatch()
+  const produtos = useSelector((state: RootState) => state.products.items)
+  const carrinho = useSelector((state: RootState) => state.cart.items)
+  const favoritos = useSelector((state: RootState) => state.favorites.items)
 
   useEffect(() => {
     fetch('https://fake-api-tau.vercel.app/api/ebac_sports')
       .then((res) => res.json())
-      .then((res) => setProdutos(res))
-  }, [])
+      .then((res) => {
+        dispatch(setProdutos(res))
+      })
+  }, [dispatch])
 
-  function adicionarAoCarrinho(produto: Produto) {
-    if (carrinho.find((p) => p.id === produto.id)) {
-      alert('Item já adicionado')
-    } else {
-      setCarrinho([...carrinho, produto])
-    }
+  const adicionarAoCarrinho = (produto: Produto) => {
+    dispatch(addToCart(produto))
   }
 
-  function favoritar(produto: Produto) {
-    if (favoritos.find((p) => p.id === produto.id)) {
-      const favoritosSemProduto = favoritos.filter((p) => p.id !== produto.id)
-      setFavoritos(favoritosSemProduto)
+  const favoritar = (produto: Produto) => {
+    const existingItem = favoritos.find((p) => p.id === produto.id)
+    if (existingItem) {
+      dispatch(removeFromFavorites(produto.id))
     } else {
-      setFavoritos([...favoritos, produto])
+      dispatch(addToFavorites(produto))
     }
   }
 
