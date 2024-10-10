@@ -1,8 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  adicionarAoCarrinho,
-  adicionarAosFavoritos
-} from '../../store/reducers/carrinho'
+import { addToCart, addToFavorites } from '../../store/reducers/carrinho'
 import { RootReducer } from '../../store'
 import { Produto as ProdutoType } from '../../App'
 import * as S from './styles'
@@ -37,17 +34,14 @@ const ProdutoComponent = ({ produto }: Props) => {
         <strong>{paraReal(produto.preco)}</strong>
       </S.Prices>
       <S.BtnComprar
-        onClick={() => dispatch(adicionarAosFavoritos(produto))}
+        onClick={() => dispatch(addToFavorites(produto))}
         type="button"
       >
         {itemFavoritado
           ? '- Remover dos favoritos'
           : '+ Adicionar aos favoritos'}
       </S.BtnComprar>
-      <S.BtnComprar
-        onClick={() => dispatch(adicionarAoCarrinho(produto))}
-        type="button"
-      >
+      <S.BtnComprar onClick={() => dispatch(addToCart(produto))} type="button">
         Adicionar ao carrinho
       </S.BtnComprar>
     </S.Produto>

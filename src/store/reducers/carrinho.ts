@@ -16,7 +16,7 @@ const carrinhoSlice = createSlice({
   name: 'carrinho',
   initialState,
   reducers: {
-    adicionarAoCarrinho: (state, action: PayloadAction<Produto>) => {
+    addToCart: (state, action: PayloadAction<Produto>) => {
       const produto = action.payload
 
       if (state.itens.find((item) => item.id === produto.id)) {
@@ -25,14 +25,14 @@ const carrinhoSlice = createSlice({
         state.itens = [...state.itens, produto]
       }
     },
-    adicionarAosFavoritos: (state, action: PayloadAction<Produto>) => {
+    addToFavorites: (state, action: PayloadAction<Produto>) => {
       const favorito = action.payload
 
       if (!state.favoritos.find((item) => item.id === favorito.id)) {
         state.favoritos = [...state.favoritos, favorito]
       }
     },
-    removerDosFavoritos: (state, action: PayloadAction<Produto>) => {
+    removeToFavorites: (state, action: PayloadAction<Produto>) => {
       const favorito = action.payload
 
       if (state.favoritos.find((item) => item.id === favorito.id)) {
@@ -46,10 +46,7 @@ const carrinhoSlice = createSlice({
   }
 })
 
-export const {
-  adicionarAoCarrinho,
-  adicionarAosFavoritos,
-  removerDosFavoritos
-} = carrinhoSlice.actions
+export const { addToCart, addToFavorites, removeToFavorites } =
+  carrinhoSlice.actions
 
 export default carrinhoSlice.reducer
