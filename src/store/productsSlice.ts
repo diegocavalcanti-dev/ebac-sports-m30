@@ -1,6 +1,5 @@
-// src/store/productsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Produto } from '../App' // Certifique-se de que o caminho está correto
+import { Produto } from '../App'
 
 interface ProductsState {
   items: Produto[]
@@ -15,10 +14,10 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     setProdutos: (state, action: PayloadAction<Produto[]>) => {
-      state.items = action.payload // Define os produtos recebidos na ação
+      state.items = action.payload
     }
   }
 })
 
-export const { setProdutos } = productsSlice.actions // Exporta a ação
+export const { setProdutos } = productsSlice.actions
 export default productsSlice.reducer
